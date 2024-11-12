@@ -36,11 +36,11 @@ jobs:
         
         - name: Build Docker image
           run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMG_NAME }}:${{ secrets.TAG }} .
+            docker build -t ${{ secrets.IMG_NAME }}:${{ secrets.TAG }} .
 
         - name: Tag the Image
           run: |
-            docker tag ${{ secrets.IMG_NAME }}:${{ secrets.TAG}} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMG_NAME }}:${{ secrets.TAG }}
+            docker tag ${{ secrets.IMG_NAME }}:${{ secrets.TAG }} ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMG_NAME }}:${{ secrets.TAG }}
         
         - name: Push the Image
           run: |
