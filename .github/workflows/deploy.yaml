@@ -36,7 +36,7 @@ jobs:
         
         - name: Build Docker image
           run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMG_NAME }}:${{ secrets.TAG}} .
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMG_NAME }}:${{ secrets.TAG }} .
 
         - name: Tag the Image
           run: |
