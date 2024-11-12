@@ -40,11 +40,13 @@ jobs:
 
         - name: Tag the Image
           run: |
-            docker tag  mkk-nginx:latest "$DOCKER_USERNAME"/mkk-nginx:latest
+            docker tag  mkk-nginx:latest "$DOCKER_USERNAME/mkk-nginx:latest"
         
         - name: Push the Image to Dockerhub
           run: |
-            docker push "$DOCKER_USERNAME"/mkk-nginx:latest
+            docker push "$DOCKER_USERNAME/mkk-nginx:latest"
+
+        # - name: Creating a container
 
     
 
