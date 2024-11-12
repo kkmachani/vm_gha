@@ -29,22 +29,22 @@ jobs:
           env:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-            IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+            # IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
             # TAG: ${{ secrets.TAG }}
           run: |
             echo $DOCKER_PASSWORD | docker login -u  $DOCKER_USERNAME --password-stdin
         
         - name: Build Docker image
           run: |
-            docker build -t "$IMAGE_NAME:$TAG" .
+            docker build -t mkk-nginx .
 
         - name: Tag the Image
           run: |
-            docker tag "$IMG_NAME:$TAG" "$DOCKER_USERNAME/$IMAGE_NAME:$TAG"
+            docker tag  $DOCKER_USERNAME/mkk-nginx:latest
         
         - name: Push the Image to Dockerhub
           run: |
-            docker push "$DOCKER_USENAME/$IMAGE_NAME:$TAG"
+            docker push $DOCKER_USENAME/mkk-nginx:latest
 
     
 
