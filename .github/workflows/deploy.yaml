@@ -36,15 +36,15 @@ jobs:
         
         - name: Build Docker image
           run: |
-            docker build -t "$IMAGE_NAME":"$TAG" .
+            docker build -t "$IMAGE_NAME:$TAG" .
 
         - name: Tag the Image
           run: |
-            docker tag "$IMAGE_NAME":"$TAG" "$DOCKER_USERNAME"/"$IMAGE_NAME":"$TAG"
+            docker tag "$IMAGE_NAME":"$TAG" "$DOCKER_USERNAME/$IMAGE_NAME:$TAG"
         
         - name: Push the Image
           run: |
-            docker push "$DOCKER_USERNAME"/"$IMAGE_NAME":$"TAG"
+            docker push "$DOCKER_USERNAME/$IMAGE_NAME:$TAG"
 
     
 
