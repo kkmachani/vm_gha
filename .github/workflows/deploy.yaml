@@ -25,6 +25,7 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         TAG: ${{ secrets.TAG }}
+        CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
 
       steps:
         - name: Checkout repo
@@ -48,8 +49,8 @@ jobs:
             
             docker push $DOCKER_USERNAME/$IMAGE_NAME:$TAG
 
-        # - name: Creating a container
-        #   run: docker run --name $DOCKER_USERNAME/$IMAGE_NAME:$TAG
+        - name: Creating a container
+          run: docker run --name $CONTAINER_NAME -d -p 8080:80 $DOCKER_USERNAME/$IMAGE_NAME:$TAG
     
 
         
