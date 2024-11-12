@@ -40,7 +40,7 @@ jobs:
 
         - name: Tag the Image
           run: |
-            docker tag $IMG_NAME:latest $DOCKER_USERNAME/$IMAGE_NAME:$TAG
+            docker tag $IMG_NAME:$TAG $DOCKER_USERNAME/$IMAGE_NAME:$TAG
         
         - name: Push the Image to Dockerhub
           run: |
