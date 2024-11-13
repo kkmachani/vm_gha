@@ -16,7 +16,9 @@ spec:
         app: sys-app
     spec:
       containers:
-        - name: ${{ secrets.CONTAINER_NAME }}
-          image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ secrets.TAG }}
+        - name: sys-nginx
+          image: machanikrishnakumar/sys-nginx:latest
           ports:
             - containerPort: 8080
+          
+            
