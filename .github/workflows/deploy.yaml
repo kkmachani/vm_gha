@@ -70,5 +70,8 @@ jobs:
       steps:
         - name: checkout repo
           uses: actions/checkout@v4
+
+        - name: Deploying the pods in cluster
+          run: kubectl apply -f ./kubernetes/deployment.yaml
         
         
