@@ -70,8 +70,26 @@ jobs:
       steps:
         - name: checkout repo
           uses: actions/checkout@v4
+        
+        - name: Set up kubectl
+          uses: azure/setup-kubectl@v3
+          with:
+            version: 'latest'  # You can specify the version of kubectl if needed
+  
+        - name: Configure Minikube (if using self-hosted runner)
+          if: runner.os == 'Linux'  # This step only runs on Linux self-hosted runners
+          run: |
+            # Install Minikube
+            curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+            sudo install minikube /usr/local/bin/
+            # Start Minikube
+            minikube start --driver=docker
+  
+        - name: Set kubeconfig for Minikube
+          run: |
+            kubectl config use-context minikube  # Sets Minikube as the context
 
-        - name: Deploying into Minikube cluster
+        - name: Deploy into Minikube cluster
           run: |
             kubectl apply -f ./kubernetes/*.yaml
 
