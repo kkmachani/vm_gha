@@ -76,7 +76,7 @@ jobs:
           with:
             version: 'latest'  # You can specify the version of kubectl if needed
   
-        - name: Configure Minikube (if using self-hosted runner)
+        - name: Configure Minikube (if it is self-hosted runner)
           if: runner.os == 'Linux'  # This step only runs on Linux self-hosted runners
           run: |
             # Install Minikube
