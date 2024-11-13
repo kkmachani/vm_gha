@@ -55,6 +55,12 @@ jobs:
     dev-deploy:
       needs: [docker]
       environment: trial
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+        TAG: ${{ secrets.TAG }}
+        CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
       strategy:
         matrix:
          os: [self-hosted,windows-latest]
