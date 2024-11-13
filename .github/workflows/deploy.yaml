@@ -52,5 +52,19 @@ jobs:
         - name: Creating a container
           run: docker run --name $CONTAINER_NAME -d -p 8080:80 $DOCKER_USERNAME/$IMAGE_NAME:$TAG
     
-
+    dev-deploy:
+      needs: [docker]
+      environment: trial
+      strategy:
+        matrix:
+         os: [self-hosted,windows-latest]
+         exclude: 
+           - os: windows-latest
+      runs-on: ${{ matrix.os }}
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v4
+        
+        - name: Deploy in the minikube cluster
+          run: kubectl apply -f ./kubernetes/deployment.yaml
         
