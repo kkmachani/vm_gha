@@ -16,7 +16,7 @@ spec:
         app: sys-app
     spec:
       containers:
-        - name: $CONTAINER_NAME
-          image: $IMAGE_NAME
+        - name: ${{ secrets.CONTAINER_NAME }}
+          image: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ secrets.TAG }}
           ports:
             - containerPort: 8080
