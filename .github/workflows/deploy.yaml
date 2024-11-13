@@ -71,6 +71,4 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@v4
         
-        - name: Deploy in the minikube cluster
-          run: kubectl apply -f ./kubernetes/deployment.yaml
         
