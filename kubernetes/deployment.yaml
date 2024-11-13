@@ -19,6 +19,6 @@ spec:
         - name: sys-nginx
           image: machanikrishnakumar/sys-nginx:latest
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           
             
