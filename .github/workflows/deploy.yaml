@@ -71,7 +71,7 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@v4
         
-        - name: Set up kubectl
+        - name: Setup kubectl
           uses: azure/setup-kubectl@v3
           with:
             version: 'latest'  # You can specify the version of kubectl if needed
