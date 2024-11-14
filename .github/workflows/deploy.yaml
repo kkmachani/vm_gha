@@ -10,54 +10,51 @@ on:
         - 'feature/*'
            
 jobs:
-    docker:
-      strategy:
-        fail-fast: false # to stop the running jobs when the job is failure
-        matrix:
-          os: [self-hosted,windows-latest]
-          exclude: 
-            - os: windows-latest
+    # docker:
+    #   strategy:
+    #     fail-fast: false # to stop the running jobs when the job is failure
+    #     matrix:
+    #       os: [self-hosted,windows-latest]
+    #       exclude: 
+    #         - os: windows-latest
 
-      runs-on: ${{ matrix.os }}
-      environment: trial
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
-        TAG: ${{ secrets.TAG }}
-        CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+    #   runs-on: ${{ matrix.os }}
+    #   environment: trial
+      # env:
+      #   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      #   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      #   IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
+      #   TAG: ${{ secrets.TAG }}
+      #   CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
 
-      steps:
-        - name: Checkout repo
-          uses: actions/checkout@v4
+      # steps:
+      #   - name: Checkout repo
+      #     uses: actions/checkout@v4
 
-        - name: Login to Docker Hub
-          run: |
-            echo $DOCKER_PASSWORD | docker login -u  $DOCKER_USERNAME --password-stdin
+      #   - name: Login to Docker Hub
+      #     run: |
+      #       echo $DOCKER_PASSWORD | docker login -u  $DOCKER_USERNAME --password-stdin
         
-        - name: Build Docker image
-          run: |
-            docker build -t $IMAGE_NAME:$TAG .
+      #   - name: Build Docker image
+      #     run: |
+      #       docker build -t $IMAGE_NAME:$TAG .
 
-        - name: Tag the Image
-          run: |
-            echo "Tagging the image $IMAGE_NAME:$TAG with the Docker Hub repo"
-            docker tag  $IMAGE_NAME:$TAG  $DOCKER_USERNAME/$IMAGE_NAME:$TAG
+      #   - name: Tag the Image
+      #     run: |
+      #       echo "Tagging the image $IMAGE_NAME:$TAG with the Docker Hub repo"
+      #       docker tag  $IMAGE_NAME:$TAG  $DOCKER_USERNAME/$IMAGE_NAME:$TAG
         
-        - name: Push the Image to Dockerhub
-          run: |
+      #   - name: Push the Image to Dockerhub
+      #     run: |
             
-            docker push $DOCKER_USERNAME/$IMAGE_NAME:$TAG
+      #       docker push $DOCKER_USERNAME/$IMAGE_NAME:$TAG
 
-        - name: Creating a container
-          run: docker run --name $CONTAINER_NAME -d -p 8080:80 $DOCKER_USERNAME/$IMAGE_NAME:$TAG
+      #   - name: Creating a container
+      #     run: docker run --name $CONTAINER_NAME -d -p 8080:80 $DOCKER_USERNAME/$IMAGE_NAME:$TAG
     
-    dev-deploy:
-      needs: [docker]
+    acr-deploy:
       environment: trial
       env:
-        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         IMAGE_NAME: ${{ secrets.IMAGE_NAME }}
         TAG: ${{ secrets.TAG }}
         CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
@@ -71,28 +68,29 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@v4
         
+<<<<<<< HEAD
+        - name: Docker Login
+          uses: azure/docker-login@v1
+=======
         - name: Setup kubectl
           uses: azure/setup-kubectl@v3
+>>>>>>> 62d0d57bc21d4f59efb25360e21d1d1110959a75
           with:
-            version: 'latest'  # You can specify the version of kubectl if needed
-  
-        - name: Configure Minikube (if it is self-hosted runner)
-          if: runner.os == 'Linux'  # This step only runs on Linux self-hosted runners
-          run: |
-            # Install Minikube
-            curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-            sudo install minikube /usr/local/bin/
-            # Start Minikube
-            minikube start --driver=docker
-  
-        - name: Set kubeconfig for Minikube
-          run: |
-            kubectl config use-context minikube  # Sets Minikube as the context
+            login-server: ${{ env.ACR_SERVER }}
+            username: ${{ env.ACR_USERNAME }}
+            password: ${{ env.ACR_PASSWORD }}
+        
+        - name: Build the Image
+          run:  |
+            docker build -f ./Dockerfile -t ${{ env.ACR_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
 
-        - name: Deploy into Minikube cluster
+        - name: Push the Image
           run: |
-            kubectl apply -f ./kubernetes/deployment.yaml
-            kubectl apply -f ./kubernetes/service.yaml
+            docker push ${{ env.ACR_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}
+
+        
+        
+  
         
         
         
