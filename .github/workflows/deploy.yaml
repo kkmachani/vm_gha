@@ -68,18 +68,13 @@ jobs:
         - name: checkout repo
           uses: actions/checkout@v4
         
-<<<<<<< HEAD
         - name: Docker Login
           uses: azure/docker-login@v1
-=======
-        - name: Setup kubectl
-          uses: azure/setup-kubectl@v3
->>>>>>> 62d0d57bc21d4f59efb25360e21d1d1110959a75
           with:
             login-server: ${{ env.ACR_SERVER }}
-            username: ${{ env.ACR_USERNAME }}
+            username: ${{ env.ACR_USER}}
             password: ${{ env.ACR_PASSWORD }}
-        
+ 
         - name: Build the Image
           run:  |
             docker build -f ./Dockerfile -t ${{ env.ACR_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.TAG }} .
